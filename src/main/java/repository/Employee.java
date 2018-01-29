@@ -17,9 +17,16 @@ public class Employee {
     @Column(name="secondName")
     private String lastName;
 
+    @Column(name="firstName")
+    private boolean isInCompany;
+
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="history")
     List<Event> history;
+
+    public boolean isInCompany() { return isInCompany; }
+
+    public void setInCompany(boolean inCompany) { isInCompany = inCompany; }
 
     public long getId() {
         return id;

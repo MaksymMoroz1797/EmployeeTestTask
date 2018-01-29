@@ -7,41 +7,33 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import repository.CurrentEmployee;
-import repository.EmployeeRepository;
+import services.EmployeeService;
 
 @RestController
 public class EmployeeController {
     @Autowired
-    EmployeeRepository employeeRepository;
+    EmployeeService employeeService;
 
     @RequestMapping(value = "/employees/save", method = RequestMethod.POST)
     void saveEmployee(@ModelAttribute("employee") EmployeeDTO employee) {
-        CurrentEmployee currentEmployee = new CurrentEmployee();
-        currentEmployee.setFirstName(employee.getFirstName());
-        currentEmployee.setLastName(employee.getLastName());
-        employeeRepository.save(currentEmployee);
+        employeeService.save(employee.getFirstName(), employee.getLastName());
     }
 
     @RequestMapping(value = "/employees/update", method = RequestMethod.PUT)
     ResponseEntity<String> updateEmployee(@ModelAttribute("employee") EmployeeDTO employee,
-                          @ModelAttribute("updeteemployee") EmployeeDTO updatEemployee) {
-        CurrentEmployee currentEmployee = employeeRepository.findByFirstNameAndLastName(employee.getLastName(),
-                employee.getLastName());
-        if (currentEmployee != null) {
-            currentEmployee.setFirstName(updatEemployee.getFirstName());
-            currentEmployee.setLastName(updatEemployee.getLastName());
+                          @ModelAttribute("updeteemployee") EmployeeDTO updateEemployee) {
+        boolean result = employeeService.update(employee.getFirstName(), employee.getLastName(),
+                updateEemployee.getFirstName(), updateEemployee.getLastName());
+        if (result) {
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @RequestMapping(value = "/employees/update", method = RequestMethod.POST)
+    @RequestMapping(value = "/employees/delete", method = RequestMethod.POST)
     ResponseEntity<String> deleteEmployee(@ModelAttribute("employee") EmployeeDTO employee) {
-        CurrentEmployee currentEmployee = employeeRepository.findByFirstNameAndLastName(employee.getLastName(),
-                employee.getLastName());
-        if (currentEmployee != null) {
-            employeeRepository.delete(currentEmployee);
+        boolean result = employeeService.delete(employee.getFirstName(), employee.getLastName());
+        if (result) {
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

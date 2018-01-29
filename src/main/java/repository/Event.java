@@ -12,7 +12,7 @@ public class Event {
 
     @Id
     @Column(name="id")
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     long id;
 
     @Column(name="action")
