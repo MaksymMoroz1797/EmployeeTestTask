@@ -21,7 +21,7 @@ public class EmployeeController {
 
     @RequestMapping(value = "/employees/update", method = RequestMethod.PUT)
     ResponseEntity<String> updateEmployee(@ModelAttribute("employee") EmployeeDTO employee,
-                          @ModelAttribute("updeteemployee") EmployeeDTO updateEemployee) {
+                          @ModelAttribute("updateEmployee") EmployeeDTO updateEemployee) {
         boolean result = employeeService.update(employee.getFirstName(), employee.getLastName(),
                 updateEemployee.getFirstName(), updateEemployee.getLastName());
         if (result) {
@@ -30,7 +30,7 @@ public class EmployeeController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    @RequestMapping(value = "/employees/delete", method = RequestMethod.POST)
+    @RequestMapping(value = "/employees/delete", method = RequestMethod.DELETE)
     ResponseEntity<String> deleteEmployee(@ModelAttribute("employee") EmployeeDTO employee) {
         boolean result = employeeService.delete(employee.getFirstName(), employee.getLastName());
         if (result) {
