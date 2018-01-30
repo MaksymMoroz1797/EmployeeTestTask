@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import repository.Employee;
 import repository.EmplyoeeRepository;
 import repository.Event;
-import repository.EventRepository;
 
 import java.util.Date;
 
@@ -41,7 +40,7 @@ public class EmployeeService {
     public boolean delete(String fName, String lName) {
         Employee employee = employeeRepository.findByFirstNameAndLastName(fName, lName);
         if (employee == null || !employee.isInCompany()) return false;
-        employeeRepository.delete(employee);
+        employee.setInCompany(false);
         Event event = new Event();
         event.setAction(Event.Action.DELETE);
         event.setDate(new Date(System.currentTimeMillis()));
